@@ -1,9 +1,17 @@
-#CS2640 Final Project
-#Devin Khun, Sidney Nguyen, Andrew Tarng
-#This program acts as a word guessing game, similar to hangman
+# Date: 12/6/23
+# Author: Devin Khun, Sidney Nguyen, Andrew Tarng
+# Course: CS 2640
+# Program: MIPS Hangman Final Project
+# Description: This is a simple Hangman game that chooses a
+# random word from a word bank. It then prompts the user to
+# guess a letter. If the letter is in the word, then it will
+# appear in the blanks. If the letter is not in the word, then
+# it will deduct a point from the player's score.
+# The player will then be prompted if they want to play another round.
+# At the end of the game, the player's total score is displayed.
 
 .data
-### word bank ###
+### Word Bank ###
 word0:		.asciiz	"desktop"
 word1:		.asciiz	"processor"
 word2:		.asciiz	"video"
@@ -20,26 +28,26 @@ word12:		.asciiz "programming"
 
 word_bank:		.word	word0, word1, word2, word3, word4, word5, word6, word7, word8, word9, word10, word11, word12
 
-#length of word
+# Length of Word
 length:	.word	13
 
-#guessed letters word
+# Gussed Letters Word
 guessed_letter:	.space	32
 
-#string table
-newline:		.asciiz "\n"
-.:		.asciiz ".\n"
-welcome_msg:	.asciiz "Welcome to Hangman! \n"
-goodbye: 	.asciiz "\nGoodbye! Thanks for playing!"
-correct:	.asciiz "Correct! "
-incorrect:	.asciiz "Incorrect! "
-word_is_msg:	.asciiz "Guess the following word using only lower-case characters "
-guess_msg: .asciiz"Guess a letter?\n"
+# String Print Table
+newline:			.asciiz "\n"
+.:					.asciiz ".\n"
+welcome_msg:		.asciiz "Welcome to Hangman! \n"
+goodbye: 			.asciiz "\nGoodbye! Thanks for playing!"
+correct:			.asciiz "Correct! "
+incorrect:			.asciiz "Incorrect! "
+word_is_msg:		.asciiz "Guess the following word using only lower-case characters "
+guess_msg: 			.asciiz"Guess a letter?\n"
 correct_word_msg:	.asciiz "\nThe correct word was:\n"
-play_again_msg:	.asciiz "Play again (y/n)?\n"
-round_over_msg:	.asciiz "Round over. Your last guess was:\n"
+play_again_msg:		.asciiz "Play again (y/n)?\n"
+round_over_msg:		.asciiz "Round over. Your last guess was:\n"
 zero_points_msg:	.asciiz "You earned 0 points that round.\n"
-score_msg:	.asciiz ". The score is "
+score_msg:			.asciiz ". The score is "
 final_score_msg:	.asciiz "Your final score is "
 
 .text
