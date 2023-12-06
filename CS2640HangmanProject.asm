@@ -1,19 +1,23 @@
+#CS2640 Final Project
+#Devin Khun, Sidney Nguyen, Andrew Tarng
+#This program acts as a word guessing game, similar to hangman
+
 
 .data
 ### word bank ###
-word0:		.asciiz	"computer"
+word0:		.asciiz	"desktop"
 word1:		.asciiz	"processor"
-word2:		.asciiz	"motherboard"
-word3:		.asciiz	"graphics"
+word2:		.asciiz	"video"
+word3:		.asciiz	"bluetooth"
 word4:		.asciiz "network"
-word5:		.asciiz "ethernet"
-word6:		.asciiz "memory"
-word7:		.asciiz "microsoft"
-word8:		.asciiz	"linux"
-word9:		.asciiz	"transistor"
-word10:		.asciiz	"antidisestablishmentarianism"
-word11:		.asciiz "protocol"
-word12:		.asciiz "instruction"
+word5:		.asciiz "wireless"
+word6:		.asciiz "webcam"
+word7:		.asciiz "headphones"
+word8:		.asciiz	"mouse"
+word9:		.asciiz	"keyboard"
+word10:		.asciiz	"computers"
+word11:		.asciiz "technology"
+word12:		.asciiz "programming"
 
 word_bank:		.word	word0, word1, word2, word3, word4, word5, word6, word7, word8, word9, word10, word11, word12
 
