@@ -2,7 +2,6 @@
 #Devin Khun, Sidney Nguyen, Andrew Tarng
 #This program acts as a word guessing game, similar to hangman
 
-
 .data
 ### word bank ###
 word0:		.asciiz	"desktop"
@@ -32,15 +31,15 @@ newline:		.asciiz "\n"
 .:		.asciiz ".\n"
 welcome_msg:	.asciiz "Welcome to Hangman! \n"
 goodbye: 	.asciiz "\nGoodbye! Thanks for playing!"
-yes:		.asciiz "Yes! "
-no:		.asciiz "No! "
-word_is_msg:	.asciiz "The word is "
+correct:	.asciiz "Correct! "
+incorrect:	.asciiz "Incorrect! "
+word_is_msg:	.asciiz "Guess the following word using only lower-case characters "
 guess_msg: .asciiz"Guess a letter?\n"
-correct_word_msg:	.asciiz "\nCorrect word was:\n"
-play_again_msg:	.asciiz "Do you want to play again (y/n)?\n"
-round_over_msg:	.asciiz "Round is over. your final guess was:\n"
+correct_word_msg:	.asciiz "\nThe correct word was:\n"
+play_again_msg:	.asciiz "Play again (y/n)?\n"
+round_over_msg:	.asciiz "Round over. Your last guess was:\n"
 zero_points_msg:	.asciiz "You earned 0 points that round.\n"
-score_msg:	.asciiz ". Score is "
+score_msg:	.asciiz ". The score is "
 final_score_msg:	.asciiz "Your final score is "
 
 .text
@@ -271,8 +270,8 @@ round_loop:
 	addi	$s0, $s0 -1			# wrong char, subtract 1 from score
 	
 	# character not found. display no!
-	la	$a0, no				# load no!
-	jal	print				# print no!
+	la	$a0, incorrect				# load incorrect!
+	jal	print				# print incorrect!
 	beq	$s0, $0, zero_points	# if score == 0, end round now
 	
 	j	round_loop			# guess again!
@@ -292,8 +291,8 @@ round_character_found:
 	beq	$v0, $0, end_round_loop	# if no underscores left in guess, end round
 	
 	#print yes
-	la	$a0, yes			# load yes!
-	jal	print				# print yes!
+	la	$a0, correct			# load correct!
+	jal	print				# print correct!
 
 	j	round_loop			# jump to top of loop
 zero_points:
