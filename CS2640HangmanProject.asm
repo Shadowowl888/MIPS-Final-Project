@@ -11,44 +11,50 @@
 # At the end of the game, the player's total score is displayed.
 
 .data
-### Word Bank ###
-word0:		.asciiz	"desktop"
-word1:		.asciiz	"processor"
-word2:		.asciiz	"video"
-word3:		.asciiz	"bluetooth"
-word4:		.asciiz "network"
-word5:		.asciiz "wireless"
-word6:		.asciiz "webcam"
-word7:		.asciiz "headphones"
-word8:		.asciiz	"mouse"
-word9:		.asciiz	"keyboard"
-word10:		.asciiz	"computers"
-word11:		.asciiz "technology"
-word12:		.asciiz "programming"
+### word bank ###
+word0:		.asciiz	"laptop"
+word1:		.asciiz	"server"
+word2:		.asciiz	"router"
+word3:		.asciiz	"socket"
+word4:		.asciiz "bitmap"
+word5:		.asciiz "binary"
+word6:		.asciiz "decode"
+word7:		.asciiz "encode"
+word8:		.asciiz	"domain"
+word9:		.asciiz	"driver"
+word10:		.asciiz	"google"
+word11:		.asciiz "hacker"
+word12:		.asciiz "online"
 
 word_bank:		.word	word0, word1, word2, word3, word4, word5, word6, word7, word8, word9, word10, word11, word12
 
-# Length of Word
+#length of word
 length:	.word	13
 
-# Gussed Letters Word
+#guessed letters word
 guessed_letter:	.space	32
 
-# String Print Table
-newline:			.asciiz "\n"
-.:					.asciiz ".\n"
-welcome_msg:		.asciiz "Welcome to Hangman! \n"
-goodbye: 			.asciiz "\nGoodbye! Thanks for playing!"
-correct:			.asciiz "Correct! "
-incorrect:			.asciiz "Incorrect! "
-word_is_msg:		.asciiz "Guess the following word using only lower-case characters "
-guess_msg: 			.asciiz"Guess a letter?\n"
+#string table
+newline:		.asciiz "\n"
+.:		.asciiz ".\n"
+welcome_msg:	.asciiz "Welcome to Hangman! \n"
+goodbye: 	.asciiz "\nGoodbye! Thanks for playing!"
+correct:	.asciiz "Correct! "
+incorrect:	.asciiz "Incorrect! "
+word_is_msg:	.asciiz "Guess the following word using only lower-case characters "
+guess_msg: .asciiz"Guess a letter?\n"
 correct_word_msg:	.asciiz "\nThe correct word was:\n"
-play_again_msg:		.asciiz "Play again (y/n)?\n"
-round_over_msg:		.asciiz "Round over. Your last guess was:\n"
+play_again_msg:	.asciiz "Play again (y/n)?\n"
+round_over_msg:	.asciiz "Round over. Your last guess was:\n"
 zero_points_msg:	.asciiz "You earned 0 points that round.\n"
-score_msg:			.asciiz ". The score is "
+score_msg:	.asciiz ". The score is "
 final_score_msg:	.asciiz "Your final score is "
+hangman1_msg:	.asciiz "\n+---+\n|   |\n|   O\n|\n|\n|\n+---\n"
+hangman2_msg:	.asciiz "\n+---+\n|   |\n|   O\n|   |\n|\n|\n+---\n"
+hangman3_msg:	.asciiz "\n+---+\n|   |\n|   O\n|  -|\n|  \n|\n+---\n"
+hangman4_msg:	.asciiz "\n+---+\n|   |\n|   O\n|  -|-\n|  \n|\n+---\n"
+hangman5_msg:	.asciiz "\n+---+\n|   |\n|   O\n|  -|-\n|  /\n|\n+---\n"
+hangman6_msg:	.asciiz "\n+---+\n|   |\n|   O\n|  -|-\n| /  \\ \n|\n+---\n"
 
 .text
 main:
@@ -56,6 +62,7 @@ main:
 	lw	$s0, word_bank			# initialize s0 with the first word
 	and	$s1, $s1, $0			# initialize s1 to 0 (s1 == player score)
 	and	$s2, $s2, $0			# initialize s2 to 0 (s2 == run counter)
+	and 	$t3, $t3, $0			# initilize t3 to 0 (t3 == number of incorrect guesses)
 	
 	#print welcome
 	la	$a0, welcome_msg
@@ -81,7 +88,7 @@ if_run_eq_zero:
 	
 	#increment
 	add	$s1, $s1, $v0			# add return value of play_game to player score
-	addi	$s2, $s2, 1
+	addi	$s2, $s2, 1			
 	
 	#output post-round info
 	la	$a0, correct_word_msg		#load string address into correct register
@@ -276,6 +283,15 @@ round_loop:
 	
 	### if char match not found
 	addi	$s0, $s0 -1			# wrong char, subtract 1 from score
+	addi	$t3, $t3, 1			# increment number of incorrect guesses by 1
+	
+	# Check the value of $t3 for specific conditions and print messages
+    	beq $t3, 1, print_hangman1   # If $t3 equals 1, jump to print_hangman1
+    	beq $t3, 2, print_hangman2   # If $t3 equals 2, jump to print_hangman2
+    	beq $t3, 3, print_hangman3   # If $t3 equals 3, jump to print_hangman3
+    	beq $t3, 4, print_hangman4   # If $t3 equals 4, jump to print_hangman4
+    	beq $t3, 5, print_hangman5   # If $t3 equals 5, jump to print_hangman5
+    	beq $t3, 6, print_hangman6   # If $t3 equals 6, jump to print_hangman6
 	
 	# character not found. display no!
 	la	$a0, incorrect				# load incorrect!
@@ -301,8 +317,53 @@ round_character_found:
 	#print yes
 	la	$a0, correct			# load correct!
 	jal	print				# print correct!
+	
+
 
 	j	round_loop			# jump to top of loop
+print_hangman1:
+    # Print hangman1_msg
+    li $v0, 4
+    la $a0, hangman1_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+print_hangman2:
+    # Print hangman2_msg
+    li $v0, 4
+    la $a0, hangman2_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+print_hangman3:
+    # Print hangman2_msg
+    li $v0, 4
+    la $a0, hangman3_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+print_hangman4:
+    # Print hangman2_msg
+    li $v0, 4
+    la $a0, hangman4_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+print_hangman5:
+    # Print hangman2_msg
+    li $v0, 4
+    la $a0, hangman5_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+print_hangman6:
+    # Print hangman2_msg
+    li $v0, 4
+    la $a0, hangman6_msg
+    syscall
+
+    j round_loop  # Jump back to the top of the loop
+    
 zero_points:
 	la	$a0, zero_points_msg			# load the you earned no points
 	jal	print				# print you earned no points
@@ -423,6 +484,9 @@ print:
 	## code
 	addi $v0, $0, 4				# 4 = print string syscall
 	syscall
+
+	
+	
 	
 	## pop
 	jr	$ra				#return
