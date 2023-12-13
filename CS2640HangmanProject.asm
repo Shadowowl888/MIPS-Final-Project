@@ -62,7 +62,7 @@ main:
 	lw	$s0, word_bank			# initialize s0 with the first word
 	and	$s1, $s1, $0			# initialize s1 to 0 (s1 == player score)
 	and	$s2, $s2, $0			# initialize s2 to 0 (s2 == run counter)
-	and 	$t3, $t3, $0			# initilize t3 to 0 (t3 == number of incorrect guesses)
+	
 	
 	#print welcome
 	la	$a0, welcome_msg
@@ -72,7 +72,8 @@ main:
 game_loop:
 	#if run counter = 0, skip rand word
 	beq	$s2, $0, if_run_eq_zero		# branch if the run counter is 0
-	
+
+	move $t3, $0
 	jal	get_rand_word			#get a new random word
 	move	$s0, $v0			#move to print
 	
